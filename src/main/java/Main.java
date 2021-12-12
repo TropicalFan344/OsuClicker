@@ -4,6 +4,7 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Scanner;
 
 public class Main implements NativeKeyListener{
@@ -18,16 +19,21 @@ public class Main implements NativeKeyListener{
         bpm = scanner.nextInt();
         float spb = (60f/bpm)*1000;
         new Thread(() -> {
+            long lastTime = 0;
             while (true) {
-                System.out.println("Thread Started!");
                 if (isPressed) {
-                    System.out.println("Pressing");
-                    if (pressedA[0] = !pressedA[0]) {
-                        robot.keyPress(NativeKeyEvent.VC_A);
-                        robot.keyRelease(NativeKeyEvent.VC_A);
-                    }else {
-                        robot.keyPress(NativeKeyEvent.VC_X);
-                        robot.keyRelease(NativeKeyEvent.VC_X);
+                    if (System.currentTimeMillis() - lastTime > spb || true){
+                        if (pressedA[0] = !pressedA[0]) {
+                            robot.keyPress(KeyEvent.VK_A);
+                            robot.keyRelease(KeyEvent.VK_A);
+
+                        }else {
+                            robot.keyPress(KeyEvent.VK_X);
+                            robot.keyRelease(KeyEvent.VK_X);
+                        }
+                        lastTime = System.currentTimeMillis();
+                    }else{
+                        System.out.println(System.currentTimeMillis() - lastTime + ", " + spb);
                     }
                 }
             }
@@ -62,7 +68,7 @@ public class Main implements NativeKeyListener{
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         if (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equalsIgnoreCase("d")) {
             System.out.println("Realeased!");
-//            isPressed = false;
+            isPressed = false;
         }
 
     }
